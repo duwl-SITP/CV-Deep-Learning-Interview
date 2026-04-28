@@ -55,7 +55,7 @@ To enable full functionality, please install the following Obsidian plugins:
 The code is as follows:
 
 ```dataviewjs
-dv.span("** 😊 Interview  😥**") /* optional ⏹️💤⚡⚠🧩↑↓⏳📔💾📁📝🔄📝🔀⌨️🕸️📅🔍✨*/
+dv.header(1, "** 😊 Interview  😥**") /* optional ⏹️💤⚡⚠🧩↑↓⏳📔💾📁📝🔄📝🔀⌨️🕸️📅🔍✨*/
 const calendarData = {
 	colors: {    // (optional) defaults to green
 		blue:        ["#8cb9ff", "#69a3ff", "#428bff", "#1872ff", "#0058e2"], // first entry is considered default if supplied
@@ -69,14 +69,19 @@ const calendarData = {
 	defaultEntryIntensity: 4,   // (optional) defaults to 4
 	entries: [],                // (required) populated in the DataviewJS loop below
 }
-dv.header(2, "Heatmap Calendar")
+dv.header(2, "📊 Heatmap Calendar")
 const inRecord = (p) => {
 	const path = String(p.file.path).replace(/\\/g, "/")
 	return path === "record" || path.startsWith("record/") || path.includes("/record/")
 }
+let totalQuestions = 0
 const questionOf = (p) => p.questions ?? p.question
+
 //DataviewJS loop
 for (let page of dv.pages().where(p => inRecord(p) && questionOf(p))) {
+	const q = Number(questionOf(page)) || 0  
+	totalQuestions += q
+	
 	//dv.span("<br>" + page.file.name) // uncomment for troubleshooting
 	calendarData.entries.push({
 		date: String(page.file.name).replace(/\.md$/i, ""),
@@ -89,12 +94,24 @@ for (let page of dv.pages().where(p => inRecord(p) && questionOf(p))) {
 renderHeatmapCalendar(this.container, calendarData)
 
 // Note list
-dv.header(2, "Note List")
+// 标题
+dv.header(2, "📒 Notes List")
 
+// 创建容器
+const container = dv.container.createEl("div")
+container.style.maxHeight = "800px"
+container.style.overflowY = "auto"
+container.style.border = "1px solid #ccc"
+container.style.padding = "10px"
+container.style.borderRadius = "8px"
+
+// 分组逻辑
 const bySource = new Map()
+
 for (let page of dv.pages().where(p => inRecord(p) && p.file.path !== dv.current().file.path)) {
 	const raw = page.source
 	const key = raw != null && String(raw).trim() !== "" ? String(raw).trim() : "hasn't source"
+
 	if (!bySource.has(key)) bySource.set(key, [])
 	bySource.get(key).push(page)
 }
@@ -102,15 +119,84 @@ for (let page of dv.pages().where(p => inRecord(p) && p.file.path !== dv.current
 const sources = [...bySource.keys()].sort((a, b) => a.localeCompare(b, "zh-Hans-CN"))
 
 if (sources.length === 0) {
-	dv.paragraph("Not find note in `record`.")
+	container.createEl("p", { text: "Not find note in `record`." })
 } else {
 	for (let src of sources) {
-		const group = bySource.get(src).sort((a, b) => a.file.name.localeCompare(b.file.name))
-		dv.header(3, src)
-		dv.list(group.map(p => p.file.link))
+
+		// 分组标题
+		const h3 = container.createEl("h3", { text: src })
+
+		const group = bySource.get(src).sort((a, b) =>
+			a.file.name.localeCompare(b.file.name)
+		)
+
+		// 列表
+ 		const ul = container.createEl("ul") 
+		for (let p of group) {  
+			const li = ul.createEl("li")  
+			  
+			// 👉 使用 Obsidian 内部跳转（更可靠）  
+			const link = li.createEl("a", {  
+				text: p.file.name,  
+				href: "#"  
+			})  
+			  
+			link.onclick = (e) => {  
+				e.preventDefault()  
+				app.workspace.openLinkText(p.file.path, "", false)  
+			}  
+		}
 	}
 }
 
+dv.header(2, "📑 All " + totalQuestions + " Questions")
+// 创建容器（关键：用 dv.container.appendChild）
+const ques_container = dv.container.createEl("div")
+ques_container.style.maxHeight = "800px"
+ques_container.style.overflowY = "auto"
+ques_container.style.border = "1px solid #ccc"
+ques_container.style.padding = "10px"
+ques_container.style.borderRadius = "8px"
+
+// 遍历页面
+for (let page of dv.pages().where(p => inRecord(p))) {
+  const content = await dv.io.load(page.file.path)
+  const matches = content.match(/^##\s+(.+)/gm)
+
+  if (!matches) continue
+
+  // 文件标题（可点击跳转到文件）
+  const fileTitle = ques_container.createEl("div")
+  fileTitle.style.fontWeight = "bold"
+
+  const fileLink = fileTitle.createEl("a", {
+    text: `📄 ${page.file.name}`,
+    href: page.file.path
+  })
+
+  // 列表
+  const ul = ques_container.createEl("ul")
+
+	for (let m of matches) {  
+		const text = m.replace(/^##\s+/, "")  
+		  
+		const li = ul.createEl("li")  
+		
+		const link = li.createEl("a", {  
+			text: text,  
+			href: "#"  
+		})  
+		  
+		// 👉 用 Obsidian 内部跳转（关键）  
+		link.onclick = (e) => {  
+			e.preventDefault()  
+			app.workspace.openLinkText(  
+			`${page.file.path}#${text}`,  
+			"",  
+			false  
+		)}  
+	}
+}
 ```
 
 
