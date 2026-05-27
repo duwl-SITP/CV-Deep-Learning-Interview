@@ -294,6 +294,67 @@
       background: var(--panel);
     }
 
+    .record-list {
+      display: grid;
+      gap: 14px;
+      margin: 18px 0 0;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      align-items: stretch;
+    }
+
+    .record-card {
+      display: flex;
+      flex-direction: column;
+      padding: 16px 18px;
+      background: linear-gradient(180deg, #ffffff 0%, #fbfcfd 100%);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      box-shadow: 0 1px 2px rgba(31, 35, 40, 0.04);
+      text-decoration: none;
+      transition: transform 120ms ease, box-shadow 120ms ease, border-color 120ms ease;
+      height: 220px;
+    }
+
+    .record-card:hover {
+      transform: translateY(-1px);
+      border-color: #b6c2cf;
+      box-shadow: 0 6px 18px rgba(31, 35, 40, 0.08);
+      text-decoration: none;
+    }
+
+    .record-card__title {
+      margin: 0;
+      color: var(--text);
+      font-size: 1rem;
+      font-weight: 600;
+    }
+
+    .record-card__meta {
+      margin: 6px 0 0;
+      color: var(--muted);
+      font-size: 0.85rem;
+    }
+
+    .record-card__summary {
+      margin: 10px 0 0;
+      color: #3d444d;
+      font-size: 0.95rem;
+      line-height: 1.6;
+      flex: 1 1 auto;
+      min-height: 0;
+      overflow-y: auto;
+      padding-right: 6px;
+    }
+
+    .record-card__topics {
+      margin: 0;
+      padding-left: 18px;
+    }
+
+    .record-card__topics li {
+      margin: 4px 0;
+    }
+
     .site-footer {
       width: min(980px, calc(100% - 32px));
       margin: 0 auto 24px;
