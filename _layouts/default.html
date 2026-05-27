@@ -1,92 +1,35 @@
 <!doctype html>
 <html lang="zh-CN">
+
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>{% if page.title %}{{ page.title }} | {% endif %}{{ site.title }}</title>
-  <meta name="description" content="{{ site.description }}">
+
+  <title>
+    {% if page.title %}
+      {{ page.title }} |
+    {% endif %}
+    {{ site.title }}
+  </title>
+
   <script>
-    MathJax = {
+    window.MathJax = {
       tex: {
-        inlineMath: {'[+]': [['$', '$']]},
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
         displayMath: [['$$', '$$'], ['\\[', '\\]']]
       }
     };
   </script>
-  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js"></script>
-  <style>
-    :root {
-      color-scheme: light;
-    }
-    body {
-      margin: 0;
-      background: #f7f5ef;
-      color: #1f2328;
-      font-family: Georgia, "Noto Serif SC", "Songti SC", serif;
-      line-height: 1.8;
-    }
-    .page {
-      max-width: 900px;
-      margin: 0 auto;
-      padding: 2.5rem 1.25rem 4rem;
-    }
-    .page-header {
-      margin-bottom: 2rem;
-      padding-bottom: 1rem;
-      border-bottom: 1px solid #d9d4c7;
-    }
-    .page-header a {
-      color: #8a4b08;
-      text-decoration: none;
-    }
-    .page-header a:hover {
-      text-decoration: underline;
-    }
-    h1, h2, h3, h4, h5, h6 {
-      line-height: 1.35;
-      margin-top: 1.6em;
-      margin-bottom: 0.6em;
-    }
-    img {
-      max-width: 100%;
-      height: auto;
-    }
-    pre {
-      overflow-x: auto;
-      padding: 1rem;
-      background: #f1ede3;
-      border-radius: 8px;
-    }
-    code, pre {
-      font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
-    }
-    a {
-      color: #8a4b08;
-    }
-    .record-meta {
-      color: #57606a;
-      font-size: 0.95rem;
-      margin-top: -0.25rem;
-    }
-    mjx-container {
-      overflow-x: auto;
-      overflow-y: hidden;
-    }
-  </style>
-</head>
-<body>
-  <main class="page">
-    <header class="page-header">
-      <div><a href="{{ '/' | relative_url }}">{{ site.title }}</a></div>
-      {% if page.title %}
-      <h1>{{ page.title }}</h1>
-      {% endif %}
-      {% if page.source %}
-      <div class="record-meta">Source: {{ page.source }}</div>
-      {% endif %}
-    </header>
-    {{ content }}
-  </main>
-</body>
-</html>
 
+  <script
+    defer
+    src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js">
+  </script>
+
+</head>
+
+<body>
+  {{ content }}
+</body>
+
+</html>
