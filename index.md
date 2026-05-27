@@ -8,12 +8,12 @@ permalink: /
 
 按日期浏览：
 
-{% assign entries = site.pages | where_exp: "item", "item.dir == '/record/'" | sort: "title" | reverse %}
-{% for entry in entries %}
+{% for entry in site.pages reversed %}
+{% if entry.dir == '/record/' and entry.path != 'record/index.md' %}
 - [{{ entry.title }}]({{ entry.url | relative_url }})
+{% endif %}
 {% endfor %}
 
 ## README
 
 - [Repository README](./README.html)
-
