@@ -1,3 +1,8 @@
+---
+layout: default
+title: README
+permalink: /README.html
+---
 # Interview Records 
 
 Welcome to this github repository! This is a collection of interview questions📝 compiled by **Duwl**, most of which are sourced from *Xiaohongshu*📔. It mainly focuses on algorithm interview questions, and also includes topics on Linux and Git.
