@@ -9,8 +9,10 @@ permalink: /
 按日期浏览：
 
 {% for entry in site.pages reversed %}
-{% if entry.dir == '/record/' and entry.path != 'record/index.md' %}
+{% if entry.dir == '/record/' %}
+{% if entry.url != '/record/index.html' %}
 - [{{ entry.title }}]({{ entry.url | relative_url }})
+{% endif %}
 {% endif %}
 {% endfor %}
 

@@ -1,8 +1,6 @@
 title: Interview Records
-description: Interview notes rendered with Jekyll and MathJax
 markdown: kramdown
 kramdown:
   input: GFM
   math_engine: mathjax
 theme: minima
-

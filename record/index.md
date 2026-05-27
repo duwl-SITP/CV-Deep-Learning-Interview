@@ -6,10 +6,10 @@ permalink: /record/index.html
 
 ## Record Archive
 
-{% assign pages_sorted = site.pages | sort: "name" | reverse %}
-
-{% for entry in pages_sorted %}
-  {% if entry.path contains 'record/' and entry.path != 'record/index.md' %}
+{% for entry in site.pages reversed %}
+{% if entry.dir == '/record/' %}
+{% if entry.url != '/record/index.html' %}
 - [{{ entry.title | default: entry.name }}]({{ entry.url | relative_url }})
-  {% endif %}
+{% endif %}
+{% endif %}
 {% endfor %}
